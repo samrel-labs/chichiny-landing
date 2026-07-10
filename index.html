@@ -489,7 +489,7 @@
         // ۳. فرم ارسال به Google Sheets (via Webhook)
         // ============================================================
         // 🔴 آدرس وب‌هوک خود را اینجا قرار دهید (از Google Apps Script)
-        const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxMYLlxRrUSgl3LjrPaEM8FRp2vOUfCxn5yAMie23IqOWlPEThLO86S2EHGCVi21sKh/exec';
+        const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxjCAMNufQ2y7qlASt1ZkmVLM7t6JCToQY837SfeBovXjpZsGEQmCMGhVm6_KuGPnkN/exec';
 		
 		var userIP = null;
 
@@ -518,17 +518,13 @@
             this.textContent = 'Sending...';
             setFeedback('⏳ Submitting...', '');
 			
-		
 			// ===== دریافت IP کاربر =====
 			fetch('https://api.ipify.org?format=json')
 			  .then(response => response.json())
 			  .then(data => {
 				userIP = data.ip;
-				console.log('IP کاربر:', userIP);
 			  })
-			  .catch(error => {
-				console.error('خطا در دریافت IP:', error);
-			  });
+			  .catch(error => {});
 
             // ارسال به Google Sheets
             fetch(WEBHOOK_URL, {
