@@ -489,7 +489,7 @@
         // ۳. فرم ارسال به Google Sheets (via Webhook)
         // ============================================================
         // 🔴 آدرس وب‌هوک خود را اینجا قرار دهید (از Google Apps Script)
-        const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbzGjHxvc7_ztCjErPim9WzL1bYlBaPxOr7d0nJkg3Ju62azwK16ijs34dyJQYoHuUnm/exec';
+        const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycby7WURZMacfpzOAzLbb2Eblm-yJQA9_skh3MFnePzRNxkRAcTKoRwVwM195pnETVXFy/exec';
 		
 		var userIP = null;
 
@@ -526,25 +526,15 @@
 			  })
 			  .catch(error => {});
 
-            // ارسال به Google Sheets
             fetch(WEBHOOK_URL, {
                 method: 'POST',
+				mode: 'no-cors',
 				headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: email, ip: userIP, origin: window.location.origin })
             })
-			.then(response => {
-			  if (!response.ok) {
-				throw new Error('Network response was not ok');
-			  }
-			  return response.json();
-			})
-			.then(data => {
-			  if (data.success === true) {
-                setFeedback('✅ You\'re on the waitlist! We\'ll notify you soon.', 'success');
-                emailInput.value = '';
-			  } else {
-				setFeedback(data.error || 'Unknown error', 'error');
-			  }
+			.then(() => {
+				setFeedback('✅ You\'re on the waitlist! We\'ll notify you soon.', 'success');
+				emailInput.value = '';
 			})
             .catch((error) => {
                 console.error('Error:', error);
