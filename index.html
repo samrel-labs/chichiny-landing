@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Chichiny · Social Stream</title>
+    <title>Chichiny · Coming Soon</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,13 +14,8 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 
     <style>
-        /* ===== Reset & CSS Variables ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* ===== Reset & CSS Variables (همان کد قبلی، تغییری نکرده) ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --bg: #ffffff;
             --surface: #f8f8fa;
@@ -37,7 +32,6 @@
             --success: #2e7d32;
             --error: #d32f2f;
         }
-
         body.dark {
             --bg: #0b0a16;
             --surface: #1a1a28;
@@ -54,7 +48,6 @@
             --success: #66bb6a;
             --error: #ef5350;
         }
-
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg);
@@ -67,14 +60,9 @@
             transition: background 0.3s ease, color 0.3s ease;
             line-height: 1.5;
         }
+        .container { max-width: 720px; width: 100%; text-align: center; }
 
-        .container {
-            max-width: 720px;
-            width: 100%;
-            text-align: center;
-        }
-
-        /* ===== دکمه تغییر تم ===== */
+        /* دکمه تغییر تم */
         .theme-toggle {
             position: fixed;
             top: 1.5rem;
@@ -90,24 +78,18 @@
             transition: 0.25s;
             font-family: inherit;
             backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
             box-shadow: 0 2px 12px var(--shadow);
             z-index: 999;
         }
+        .theme-toggle:hover { background: var(--border); color: var(--text-primary); }
 
-        .theme-toggle:hover {
-            background: var(--border);
-            color: var(--text-primary);
-        }
-
-        /* ===== لوگو ===== */
+        /* لوگو */
         .logo-wrapper {
             margin-bottom: 1.8rem;
             display: flex;
             justify-content: center;
             align-items: center;
         }
-
         .logo-wrapper img {
             max-width: 640px;
             width: 100%;
@@ -116,100 +98,36 @@
             border-radius: 1.2rem;
             transition: filter 0.3s ease;
         }
+        body.dark .logo-wrapper img { filter: brightness(1.05) contrast(1.02); }
 
-        body.dark .logo-wrapper img {
-            filter: brightness(1.05) contrast(1.02);
+        /* ===== متن‌های مرموز جدید ===== */
+        .mystic-title {
+            font-size: clamp(1.8rem, 5vw, 3.2rem);
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
         }
-
-        .logo-fallback {
-            font-size: 1rem;
-            color: var(--text-muted);
-            background: var(--surface);
-            padding: 2rem 3rem;
-            border-radius: 1.5rem;
-            border: 1px dashed var(--border);
-            display: none;
-        }
-
-        .logo-wrapper img:not([src]) + .logo-fallback,
-        .logo-wrapper img[src=""] + .logo-fallback {
+        .mystic-title span {
             display: block;
-        }
-
-        /* ===== برند ===== */
-        .brand {
-            font-size: 3rem;
-            font-weight: 800;
-            letter-spacing: -0.03em;
+            font-weight: 700;
+            font-size: clamp(2.4rem, 6vw, 4.2rem);
             background: linear-gradient(135deg, var(--brand-start), var(--brand-end));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            display: none;
-        }
-
-        .brand-sub {
-            display: none;
-            font-size: 0.7rem;
-            font-weight: 600;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--text-muted);
             margin-top: 0.2rem;
         }
-
-        /* ===== تایتل ===== */
-        h1 {
-            font-size: clamp(2rem, 6vw, 3.4rem);
-            font-weight: 800;
-            line-height: 1.2;
-            margin: 2rem 0 0.75rem;
-            letter-spacing: -0.02em;
-            color: var(--text-primary);
+        .mystic-sub {
+            font-size: clamp(0.85rem, 2vw, 1.1rem);
+            font-weight: 300;
+            color: var(--text-muted);
+            letter-spacing: 0.2em;
+            margin-bottom: 2rem;
+            opacity: 0.6;
         }
 
-        .highlight {
-            background: linear-gradient(135deg, var(--brand-start), var(--brand-end));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .subhead {
-            font-size: 1.05rem;
-            font-weight: 400;
-            color: var(--text-secondary);
-            max-width: 500px;
-            margin: 0 auto 2.2rem auto;
-            line-height: 1.7;
-        }
-
-        /* ===== ویژگی‌ها ===== */
-        .features {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.5rem 0.8rem;
-            margin-bottom: 2.8rem;
-        }
-
-        .feature-tag {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 100px;
-            padding: 0.3rem 1.2rem;
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            letter-spacing: 0.02em;
-        }
-
-        .feature-tag strong {
-            color: var(--brand-end);
-            font-weight: 700;
-        }
-
-        /* ===== شمارنده ===== */
+        /* شمارنده (همان) */
         .counter {
             display: flex;
             justify-content: center;
@@ -217,7 +135,6 @@
             margin-bottom: 2.8rem;
             flex-wrap: wrap;
         }
-
         .counter-item {
             background: var(--surface);
             border-radius: 1.2rem;
@@ -225,7 +142,6 @@
             min-width: 60px;
             border: 1px solid var(--border);
         }
-
         .counter-number {
             font-size: 2rem;
             font-weight: 700;
@@ -233,7 +149,6 @@
             display: block;
             line-height: 1.2;
         }
-
         .counter-label {
             font-size: 0.55rem;
             text-transform: uppercase;
@@ -241,7 +156,7 @@
             color: var(--text-muted);
         }
 
-        /* ===== فرم ===== */
+        /* فرم (همان) */
         .form-wrapper {
             display: flex;
             flex-wrap: wrap;
@@ -250,7 +165,6 @@
             max-width: 480px;
             margin: 0 auto 1.2rem auto;
         }
-
         .form-wrapper input {
             flex: 1 1 200px;
             background: var(--input-bg);
@@ -263,17 +177,12 @@
             outline: none;
             transition: 0.2s;
         }
-
         .form-wrapper input:focus {
             border-color: var(--brand-end);
             background: var(--bg);
             box-shadow: 0 0 0 3px rgba(217, 108, 43, 0.08);
         }
-
-        .form-wrapper input::placeholder {
-            color: var(--text-muted);
-        }
-
+        .form-wrapper input::placeholder { color: var(--text-muted); }
         .form-wrapper button {
             background: linear-gradient(135deg, var(--brand-start), var(--brand-end));
             border: none;
@@ -288,17 +197,11 @@
             box-shadow: 0 2px 8px rgba(217, 108, 43, 0.15);
             min-width: 140px;
         }
-
         .form-wrapper button:hover:not(:disabled) {
             transform: scale(1.02);
             box-shadow: 0 4px 20px rgba(217, 108, 43, 0.2);
         }
-
-        .form-wrapper button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
+        .form-wrapper button:disabled { opacity: 0.6; cursor: not-allowed; }
         .form-feedback {
             display: block;
             font-size: 0.8rem;
@@ -307,16 +210,10 @@
             color: var(--text-muted);
             transition: 0.25s;
         }
+        .form-feedback.success { color: var(--success); }
+        .form-feedback.error { color: var(--error); }
 
-        .form-feedback.success {
-            color: var(--success);
-        }
-
-        .form-feedback.error {
-            color: var(--error);
-        }
-
-        /* ===== فوتر ===== */
+        /* فوتر */
         .footer {
             display: flex;
             flex-wrap: wrap;
@@ -328,90 +225,45 @@
             padding-top: 1.8rem;
             margin-top: 0.5rem;
         }
-
         .footer a {
             color: var(--text-secondary);
             text-decoration: none;
             transition: 0.2s;
             font-weight: 400;
         }
+        .footer a:hover { color: var(--brand-end); }
 
-        .footer a:hover {
-            color: var(--brand-end);
-        }
-
-        /* ===== واکنش‌گرایی ===== */
         @media (max-width: 480px) {
-            .brand {
-                font-size: 2.4rem;
-            }
-            .counter-item {
-                min-width: 50px;
-                padding: 0.3rem 0.8rem;
-            }
-            .counter-number {
-                font-size: 1.6rem;
-            }
-            .form-wrapper input {
-                flex: 1 1 100%;
-                text-align: center;
-            }
-            .form-wrapper button {
-                width: 100%;
-            }
-            .feature-tag {
-                font-size: 0.65rem;
-                padding: 0.3rem 0.9rem;
-            }
-            .logo-wrapper img {
-                max-width: 160px;
-            }
-            .theme-toggle {
-                top: 0.8rem;
-                right: 0.8rem;
-                font-size: 0.7rem;
-                padding: 0.3rem 0.8rem;
-            }
+            .counter-item { min-width: 50px; padding: 0.3rem 0.8rem; }
+            .counter-number { font-size: 1.6rem; }
+            .form-wrapper input { flex: 1 1 100%; text-align: center; }
+            .form-wrapper button { width: 100%; }
+            .logo-wrapper img { max-width: 160px; }
+            .theme-toggle { top: 0.8rem; right: 0.8rem; font-size: 0.7rem; padding: 0.3rem 0.8rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== دکمه تغییر تم ===== -->
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌗 Dark / Light</button>
 
     <div class="container">
 
-        <!-- ===== لوگو ===== -->
+        <!-- لوگو (همان) -->
         <div class="logo-wrapper">
-            <img src="Chichiny.png" alt="Chichiny Logo – Share thoughts. Create connections." />
+            <img src="Chichiny.png" alt="Chichiny Logo" />
             <div class="logo-fallback">✨ chichiny · logo</div>
         </div>
 
-        <!-- ===== برند ===== -->
-        <div class="brand">chichiny</div>
-        <span class="brand-sub">Iran’s new social stream</span>
-
-        <!-- ===== تایتل ===== -->
-        <h1>
-            The pulse of Iran<br />
-            <span class="highlight">in one timeline</span>
-        </h1>
-
-        <p class="subhead">
-            National conversations, local voices, and everything in between —<br />
-            a space for every Iranian to speak and listen.
-        </p>
-
-        <!-- ===== ویژگی‌ها ===== -->
-        <div class="features">
-            <span class="feature-tag"><strong>·</strong> National feed</span>
-            <span class="feature-tag"><strong>·</strong> Real voices</span>
-            <span class="feature-tag"><strong>·</strong> No algorithm tricks</span>
-            <span class="feature-tag"><strong>·</strong> For everyone</span>
+        <!-- ===== متن مرموز جدید (جایگزین brand و title و subhead) ===== -->
+        <div class="mystic-title">
+            <span>something is coming.</span>
         </div>
+        <div class="mystic-sub">— are you ready? —</div>
 
-        <!-- ===== شمارنده ===== -->
+        <!-- ===== ویژگی‌ها حذف شدند ===== -->
+
+        <!-- شمارنده (همان) -->
         <div class="counter">
             <div class="counter-item">
                 <span class="counter-number" id="days">00</span>
@@ -431,24 +283,23 @@
             </div>
         </div>
 
-        <!-- ===== فرم با اتصال مستقیم به Google Apps Script ===== -->
+        <!-- ===== فرم ===== -->
         <div class="form-wrapper">
-            <input type="email" id="emailInput" placeholder="your@email" aria-label="Email address" required />
-            <button type="button" id="submitBtn">Join waitlist</button>
+            <input type="email" id="emailInput" placeholder="your signal" aria-label="Email address" required />
+            <button type="button" id="submitBtn">receive the call</button>
         </div>
-        <span class="form-feedback" id="formFeedback">First 1,000 get an early badge</span>
+        <span class="form-feedback" id="formFeedback">— first 1000 will decode it —</span>
 
         <div class="footer">
             <span>© 2026 Chichiny</span>
             <a href="#">Privacy</a>
             <a href="#">@chichiny</a>
-            <a href="#">Beta</a>
         </div>
 
     </div>
 
     <script>
-        // ===== ۱. شمارنده =====
+        // ===== شمارنده (همان) =====
         const target = new Date();
         target.setDate(target.getDate() + 30);
 
@@ -465,7 +316,7 @@
         updateCounter();
         setInterval(updateCounter, 1000);
 
-        // ===== ۲. تغییر تم =====
+        // ===== تغییر تم (همان) =====
         const toggle = document.getElementById('themeToggle');
         const body = document.body;
 
@@ -478,55 +329,50 @@
             localStorage.setItem('theme', body.classList.contains('dark') ? 'dark' : 'light');
         });
 
-        // ===== ۳. فرم ارسال مستقیم به Google Apps Script =====
-        // 🔴 آدرس Webhook خود را از Google Apps Script اینجا قرار دهید
-        const WORKER_URL = 'https://chichiny-proxy.alidoost-saeed.workers.dev';
+        // ===== فرم ارسال به Google Apps Script (همان) =====
+        const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbyzCFOR2_DyXw9hTl63ihr1uhakgbWoIyHT4r4httg/exec';
 
-  const emailInput = document.getElementById('emailInput');
-  const submitBtn = document.getElementById('submitBtn');
-  const feedback = document.getElementById('formFeedback');
+        const emailInput = document.getElementById('emailInput');
+        const submitBtn = document.getElementById('submitBtn');
+        const feedback = document.getElementById('formFeedback');
 
-  function setFeedback(message, type) {
-    feedback.textContent = message;
-    feedback.className = 'form-feedback';
-    if (type) feedback.classList.add(type);
-  }
+        function setFeedback(message, type) {
+            feedback.textContent = message;
+            feedback.className = 'form-feedback';
+            if (type) feedback.classList.add(type);
+        }
 
-  submitBtn.addEventListener('click', function() {
-    const email = emailInput.value.trim();
+        submitBtn.addEventListener('click', function() {
+            const email = emailInput.value.trim();
 
-    if (!email || !email.includes('@') || !email.includes('.')) {
-      setFeedback('⚠️ Please enter a valid email address.', 'error');
-      emailInput.focus();
-      return;
-    }
+            if (!email || !email.includes('@') || !email.includes('.')) {
+                setFeedback('⚠️ invalid signal.', 'error');
+                emailInput.focus();
+                return;
+            }
 
-    this.disabled = true;
-    this.textContent = 'Sending...';
-    setFeedback('⏳ Submitting...', '');
+            this.disabled = true;
+            this.textContent = 'sending...';
+            setFeedback('⏳ transmitting...', '');
 
-    fetch(WORKER_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        setFeedback('✅ ' + data.message, 'success');
-        emailInput.value = '';
-      } else {
-        setFeedback('❌ ' + data.error, 'error');
-      }
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Join waitlist';
-    })
-    .catch(() => {
-      setFeedback('❌ Something went wrong. Please try again.', 'error');
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Join waitlist';
-    });
-  });
+            fetch(WEBHOOK_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email })
+            })
+            .then(() => {
+                setFeedback('✅ signal received.', 'success');
+                emailInput.value = '';
+                this.disabled = false;
+                this.textContent = 'receive the call';
+            })
+            .catch(() => {
+                setFeedback('❌ transmission failed. try again.', 'error');
+                this.disabled = false;
+                this.textContent = 'receive the call';
+            });
+        });
 
         emailInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
