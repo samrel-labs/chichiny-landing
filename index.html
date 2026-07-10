@@ -109,7 +109,7 @@
         }
 
         .logo-wrapper img {
-            max-width: 640px;
+            max-width: 440px;
             width: 100%;
             height: auto;
             display: block;
@@ -399,7 +399,7 @@
         </h1>
 
         <p class="subhead">
-            National conversations, local voices, and everything in between —<br />
+            National conversations, local voices, and everything in between<br />
             a space for every Iranian to speak and listen.
         </p>
 
@@ -453,7 +453,7 @@
         // ۱. شمارنده (۳۰ روز از امروز)
         // ============================================================
         const target = new Date();
-        target.setDate(target.getDate() + 30);
+        target.setDate(target.getDate() + 301);
 
         function pad(n) { return String(n).padStart(2, '0'); }
 
@@ -489,7 +489,7 @@
         // ۳. فرم ارسال به Google Sheets (via Webhook)
         // ============================================================
         // 🔴 آدرس وب‌هوک خود را اینجا قرار دهید (از Google Apps Script)
-        const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycby7WURZMacfpzOAzLbb2Eblm-yJQA9_skh3MFnePzRNxkRAcTKoRwVwM195pnETVXFy/exec';
+        const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbzfWAUOWzvNA5pG7yrbOJPPRniaBTVvBy4QETw6BXayJhkiQ3DtgMiV78DwVgNUnRQ8/exec';
 		
 		var userIP = null;
 
