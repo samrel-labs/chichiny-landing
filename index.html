@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>چیچینی - به زودی...</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Vazir', sans-serif;
+            background: linear-gradient(145deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+        .container {
+            max-width: 700px;
+        }
+        .logo {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(to right, #f59e0b, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin: 1.5rem 0 1rem;
+        }
+        p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            line-height: 1.8;
+        }
+        .counter {
+            margin: 2.5rem 0;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+        .counter-item {
+            background: rgba(255,255,255,0.05);
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .counter-item span {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #fbbf24;
+        }
+        .counter-item small {
+            display: block;
+            font-size: 0.8rem;
+            opacity: 0.6;
+            margin-top: 0.25rem;
+        }
+        .email-form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 2rem;
+        }
+        .email-form input {
+            padding: 0.8rem 1.5rem;
+            border-radius: 2rem;
+            border: none;
+            background: rgba(255,255,255,0.08);
+            color: white;
+            width: 250px;
+            font-size: 1rem;
+            outline: none;
+            border: 1px solid transparent;
+            transition: 0.3s;
+        }
+        .email-form input:focus {
+            border-color: #f59e0b;
+            background: rgba(255,255,255,0.12);
+        }
+        .email-form button {
+            padding: 0.8rem 2rem;
+            border-radius: 2rem;
+            border: none;
+            background: #f59e0b;
+            color: #0f172a;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .email-form button:hover {
+            background: #fbbf24;
+            transform: scale(1.02);
+        }
+        .footer {
+            margin-top: 3rem;
+            font-size: 0.9rem;
+            opacity: 0.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">چیچینی</div>
+        <h1>به زودی در محله‌ی شما</h1>
+        <p>
+            یک شبکه‌ی اجتماعی تازه برای همسایه‌ها.<br />
+            جایی برای گفتگو، کشف محله و ارتباط با اطرافیان.
+        </p>
+
+        <div class="counter">
+            <div class="counter-item">
+                <span id="days">00</span>
+                <small>روز</small>
+            </div>
+            <div class="counter-item">
+                <span id="hours">00</span>
+                <small>ساعت</small>
+            </div>
+            <div class="counter-item">
+                <span id="minutes">00</span>
+                <small>دقیقه</small>
+            </div>
+            <div class="counter-item">
+                <span id="seconds">00</span>
+                <small>ثانیه</small>
+            </div>
+        </div>
+
+        <p style="font-size:1rem; opacity:0.6;">
+            با ما همراه باشید تا از اولین خبرها مطلع شوید.
+        </p>
+        <div class="email-form">
+            <input type="email" placeholder="ایمیل خود را وارد کنید..." />
+            <button>ثبت‌نام</button>
+        </div>
+
+        <div class="footer">
+            © ۲۰۲۶ چیچینی · همه‌ی حقوق محفوظ است.
+        </div>
+    </div>
+
+    <script>
+        // کانتر معکوس برای ۳۰ روز آینده
+        const targetDate = new Date();
+        targetDate.setDate(targetDate.getDate() + 30);
+
+        function updateCounter() {
+            const now = new Date();
+            const diff = targetDate - now;
+
+            if (diff <= 0) {
+                document.getElementById('days').textContent = '۰۰';
+                document.getElementById('hours').textContent = '۰۰';
+                document.getElementById('minutes').textContent = '۰۰';
+                document.getElementById('seconds').textContent = '۰۰';
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        }
+
+        updateCounter();
+        setInterval(updateCounter, 1000);
+    </script>
+</body>
+</html>
