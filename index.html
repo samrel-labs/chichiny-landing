@@ -480,73 +480,53 @@
 
         // ===== ۳. فرم ارسال مستقیم به Google Apps Script =====
         // 🔴 آدرس Webhook خود را از Google Apps Script اینجا قرار دهید
-        const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbyY-EruVvuCcb45Zdov_S0j6KMzA4_KCM0Z5y5fjVV_igOrjun3cjzd23Fec-MBmGU2/exec';
+        const WORKER_URL = 'https://chichiny-proxy.alidoost-saeed.workers.dev';
 
-        const emailInput = document.getElementById('emailInput');
-        const submitBtn = document.getElementById('submitBtn');
-        const feedback = document.getElementById('formFeedback');
+  const emailInput = document.getElementById('emailInput');
+  const submitBtn = document.getElementById('submitBtn');
+  const feedback = document.getElementById('formFeedback');
 
-        function setFeedback(message, type) {
-            feedback.textContent = message;
-            feedback.className = 'form-feedback';
-            if (type) feedback.classList.add(type);
-        }
+  function setFeedback(message, type) {
+    feedback.textContent = message;
+    feedback.className = 'form-feedback';
+    if (type) feedback.classList.add(type);
+  }
 
-        // دریافت IP (برای محدودیت نرخ)
-        function getClientIP() {
-            return fetch('https://api.ipify.org?format=json')
-                .then(res => res.json())
-                .then(data => data.ip)
-                .catch(() => 'unknown');
-        }
+  submitBtn.addEventListener('click', function() {
+    const email = emailInput.value.trim();
 
-        submitBtn.addEventListener('click', function() {
-            const email = emailInput.value.trim();
+    if (!email || !email.includes('@') || !email.includes('.')) {
+      setFeedback('⚠️ Please enter a valid email address.', 'error');
+      emailInput.focus();
+      return;
+    }
 
-            if (!email || !email.includes('@') || !email.includes('.')) {
-                setFeedback('⚠️ Please enter a valid email address.', 'error');
-                emailInput.focus();
-                return;
-            }
+    this.disabled = true;
+    this.textContent = 'Sending...';
+    setFeedback('⏳ Submitting...', '');
 
-            this.disabled = true;
-            this.textContent = 'Sending...';
-            setFeedback('⏳ Submitting...', '');
-
-            getClientIP().then(ip => {
-                fetch(WEBHOOK_URL, {
-                    method: 'POST',
-                    mode: 'cors', // برای ارسال هدرها
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Origin': window.location.origin,
-                        'X-Client-IP': ip
-                    },
-                    body: JSON.stringify({ 
-                        email: email,
-                        origin: window.location.origin,
-                        ip: ip
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        setFeedback('✅ ' + data.message, 'success');
-                        emailInput.value = '';
-                    } else {
-                        setFeedback('❌ ' + data.error, 'error');
-                    }
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Join waitlist';
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                    setFeedback('❌ Something went wrong. Please try again.', 'error');
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Join waitlist';
-                });
-            });
-        });
+    fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        setFeedback('✅ ' + data.message, 'success');
+        emailInput.value = '';
+      } else {
+        setFeedback('❌ ' + data.error, 'error');
+      }
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Join waitlist';
+    })
+    .catch(() => {
+      setFeedback('❌ Something went wrong. Please try again.', 'error');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Join waitlist';
+    });
+  });
 
         emailInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
