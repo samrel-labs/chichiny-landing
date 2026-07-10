@@ -431,14 +431,13 @@
             </div>
         </div>
 
-        <!-- ===== فرم ثبت‌نام (اتصال به Cloudflare Worker) ===== -->
+        <!-- ===== فرم با اتصال مستقیم به Google Apps Script ===== -->
         <div class="form-wrapper">
             <input type="email" id="emailInput" placeholder="your@email" aria-label="Email address" required />
             <button type="button" id="submitBtn">Join waitlist</button>
         </div>
         <span class="form-feedback" id="formFeedback">First 1,000 get an early badge</span>
 
-        <!-- ===== فوتر ===== -->
         <div class="footer">
             <span>© 2026 Chichiny</span>
             <a href="#">Privacy</a>
@@ -449,9 +448,7 @@
     </div>
 
     <script>
-        // ============================================================
-        // ۱. شمارنده (۳۰ روز از امروز)
-        // ============================================================
+        // ===== ۱. شمارنده =====
         const target = new Date();
         target.setDate(target.getDate() + 30);
 
@@ -468,9 +465,7 @@
         updateCounter();
         setInterval(updateCounter, 1000);
 
-        // ============================================================
-        // ۲. تغییر تم (Dark / Light) با ذخیره‌سازی در localStorage
-        // ============================================================
+        // ===== ۲. تغییر تم =====
         const toggle = document.getElementById('themeToggle');
         const body = document.body;
 
@@ -480,15 +475,12 @@
 
         toggle.addEventListener('click', () => {
             body.classList.toggle('dark');
-            const theme = body.classList.contains('dark') ? 'dark' : 'light';
-            localStorage.setItem('theme', theme);
+            localStorage.setItem('theme', body.classList.contains('dark') ? 'dark' : 'light');
         });
 
-        // ============================================================
-        // ۳. فرم ارسال به Google Sheets از طریق Cloudflare Worker
-        // ============================================================
-        // 🔴 آدرس Worker خود را اینجا قرار دهید (بدون کلید API)
-        const WORKER_URL = 'https://chichiny-proxy.alidoost-saeed.workers.dev';
+        // ===== ۳. فرم ارسال مستقیم به Google Apps Script =====
+        // 🔴 آدرس Webhook خود را از Google Apps Script اینجا قرار دهید
+        const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbyzCFOR2_DyXw9hTl63ihr1uhakgbWoIyHT4r4httg/dev';
 
         const emailInput = document.getElementById('emailInput');
         const submitBtn = document.getElementById('submitBtn');
@@ -500,49 +492,62 @@
             if (type) feedback.classList.add(type);
         }
 
+        // دریافت IP (برای محدودیت نرخ)
+        function getClientIP() {
+            return fetch('https://api.ipify.org?format=json')
+                .then(res => res.json())
+                .then(data => data.ip)
+                .catch(() => 'unknown');
+        }
+
         submitBtn.addEventListener('click', function() {
             const email = emailInput.value.trim();
 
-            // اعتبارسنجی ساده
             if (!email || !email.includes('@') || !email.includes('.')) {
                 setFeedback('⚠️ Please enter a valid email address.', 'error');
                 emailInput.focus();
                 return;
             }
 
-            // غیرفعال کردن دکمه
             this.disabled = true;
             this.textContent = 'Sending...';
             setFeedback('⏳ Submitting...', '');
 
-            // ارسال به Cloudflare Worker (پراکسی)
-            fetch(WORKER_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email: email })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    setFeedback('✅ ' + data.message, 'success');
-                    emailInput.value = '';
-                } else {
-                    setFeedback('❌ ' + data.error, 'error');
-                }
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Join waitlist';
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                setFeedback('❌ Something went wrong. Please try again.', 'error');
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Join waitlist';
+            getClientIP().then(ip => {
+                fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    mode: 'cors', // برای ارسال هدرها
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Origin': window.location.origin,
+                        'X-Client-IP': ip
+                    },
+                    body: JSON.stringify({ 
+                        email: email,
+                        origin: window.location.origin,
+                        ip: ip
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        setFeedback('✅ ' + data.message, 'success');
+                        emailInput.value = '';
+                    } else {
+                        setFeedback('❌ ' + data.error, 'error');
+                    }
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Join waitlist';
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    setFeedback('❌ Something went wrong. Please try again.', 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Join waitlist';
+                });
             });
         });
 
-        // ارسال با دکمه‌ی Enter
         emailInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
